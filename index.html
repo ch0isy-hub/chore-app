@@ -1,50 +1,51 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>우리 집안일 게임</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>집안일 캘린더</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🏠 집안일 게임</h1>
+<h1>📅 집안일 게임</h1>
 
-<div class="score-box">
-  <div>사용자 A: <span id="scoreA">0</span></div>
-  <div>사용자 B: <span id="scoreB">0</span></div>
+<div class="top-box">
+  <div id="weeklyWinner"></div>
+  <div id="stats"></div>
 </div>
 
-<div id="leader" class="leader"></div>
-
-<!-- 카테고리 -->
-<div class="category">
-  <button onclick="selectCategory('주방')">주방</button>
-  <button onclick="selectCategory('청소')">청소</button>
-  <button onclick="selectCategory('세탁')">세탁</button>
-  <button onclick="selectCategory('욕실')">욕실</button>
+<div class="calendar-header">
+  <button onclick="prevMonth()">◀</button>
+  <span id="monthLabel"></span>
+  <button onclick="nextMonth()">▶</button>
 </div>
 
-<!-- 템플릿 -->
-<div id="templateList" class="template-list"></div>
+<div id="calendar" class="calendar"></div>
 
-<!-- 입력 -->
+<h2 id="selectedDate"></h2>
+
 <div class="input-box">
-  <input id="title" placeholder="집안일 입력"/>
+  <input id="title" placeholder="집안일 입력">
   
   <select id="user">
     <option value="A">사용자 A</option>
     <option value="B">사용자 B</option>
   </select>
 
-  <input id="points" type="number" placeholder="점수"/>
+  <input id="points" type="number" placeholder="점수">
+
+  <select id="repeat">
+    <option value="none">반복 없음</option>
+    <option value="daily">매일</option>
+    <option value="weekly">매주</option>
+    <option value="monthly">매월</option>
+  </select>
 
   <button onclick="addChore()">추가</button>
 </div>
 
 <div id="list"></div>
-
-<button class="reset-btn" onclick="resetDay()">오늘 리셋</button>
 
 <script src="script.js"></script>
 </body>
