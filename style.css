@@ -1,5 +1,5 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: sans-serif;
   padding: 16px;
   background: #f5f7fb;
 }
@@ -18,17 +18,36 @@ h1 {
 .leader {
   text-align: center;
   margin-bottom: 16px;
-  font-size: 18px;
+}
+
+.category {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.category button {
+  flex: 1;
+  background: #eee;
+  color: black;
+}
+
+.template-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.template-list button {
+  background: #ddd;
+  color: black;
 }
 
 .input-box {
   display: flex;
   gap: 6px;
   margin-bottom: 16px;
-}
-
-input, select {
-  flex: 1;
 }
 
 input, select, button {
@@ -41,12 +60,10 @@ button {
   background: #4CAF50;
   color: white;
   border: none;
-  font-weight: bold;
 }
 
 .reset-btn {
   width: 100%;
-  margin-top: 10px;
   background: #ff5252;
 }
 
@@ -57,7 +74,6 @@ button {
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .done {
@@ -67,5 +83,4 @@ button {
 
 .complete-btn {
   background: #2196F3;
-  margin-left: 8px;
 }
