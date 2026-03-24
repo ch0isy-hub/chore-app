@@ -8,70 +8,62 @@ h1 {
   text-align: center;
 }
 
-.score-box {
+.top-box {
   display: flex;
-  justify-content: space-around;
-  margin: 16px 0;
-  font-weight: bold;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.leader {
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.day {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
   text-align: center;
-  margin-bottom: 16px;
 }
 
-.category {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
+.today {
+  background: #4CAF50;
+  color: white;
 }
 
-.category button {
-  flex: 1;
-  background: #eee;
-  color: black;
-}
-
-.template-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.template-list button {
-  background: #ddd;
-  color: black;
+.selected {
+  border: 2px solid #2196F3;
 }
 
 .input-box {
   display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 5px;
+  margin: 10px 0;
 }
 
 input, select, button {
-  padding: 10px;
-  border-radius: 10px;
+  padding: 8px;
+  border-radius: 8px;
   border: 1px solid #ddd;
 }
 
 button {
   background: #4CAF50;
   color: white;
-  border: none;
-}
-
-.reset-btn {
-  width: 100%;
-  background: #ff5252;
 }
 
 .card {
   background: white;
-  padding: 14px;
-  border-radius: 14px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
 }
@@ -81,6 +73,7 @@ button {
   text-decoration: line-through;
 }
 
-.complete-btn {
-  background: #2196F3;
+.thanks-btn {
+  background: #ff9800;
+  margin-left: 5px;
 }
