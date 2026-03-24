@@ -1,53 +1,97 @@
 let chores = JSON.parse(localStorage.getItem("chores")) || [];
 
-// 템플릿
-const templates = {
-  "주방": ["설거지", "음식물 쓰레기", "냉장고 정리"],
-  "청소": ["바닥 청소", "먼지 닦기", "쓰레기 버리기"],
-  "세탁": ["빨래 돌리기", "빨래 널기", "빨래 개기"],
-  "욕실": ["변기 청소", "세면대 청소", "샤워부스 청소"]
-};
+let currentDate = new Date();
+let selectedDate = formatDate(new Date());
 
 function save() {
   localStorage.setItem("chores", JSON.stringify(chores));
 }
 
-// 카테고리 선택
-function selectCategory(category) {
-  const list = document.getElementById("templateList");
-  list.innerHTML = "";
-
-  templates[category].forEach(item => {
-    const btn = document.createElement("button");
-    btn.innerText = item;
-    btn.onclick = () => {
-      document.getElementById("title").value = item;
-    };
-    list.appendChild(btn);
-  });
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
 }
 
-// 추가
-function addChore() {
-  const title = document.getElementById("title").value.trim();
-  const user = document.getElementById("user").value;
-  const points = Number(document.getElementById("points").value);
+// 캘린더
+function renderCalendar() {
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
 
-  if (!title || !points) return;
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
 
-  chores.push({
-    id: Date.now(),
-    title,
-    user,
-    points,
-    done: false
-  });
+  document.getElementById("monthLabel").innerText =
+    `${year}년 ${month + 1}월`;
 
-  save();
-  render();
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
 
-  document.getElementById("title").value = "";
-  document.getElementById("points").value = "";
+  for (let i = 0; i < firstDay; i++) {
+    calendar.innerHTML += "<div></div>";
+  }
+
+  for (let d = 1; d <= lastDate; d++) {
+    const dateStr = formatDate(new Date(year, month, d));
+
+    const div = document.createElement("div");
+    div.className = "day";
+
+    if (dateStr === formatDate(new Date())) div.classList.add("today");
+    if (dateStr === selectedDate) div.classList.add("selected");
+
+    div.innerText = d;
+
+    div.onclick = () => {
+      selectedDate = dateStr;
+      renderCalendar();
+      renderList();
+    };
+
+    calendar.appendChild(div);
+  }
+
+  document.getElementById("selectedDate").innerText = selectedDate;
+}
+
+// 반복 체크
+function isMatch(chore, dateStr) {
+  if (chore.date === dateStr) return true;
+
+  if (chore.repeat === "daily") return true;
+
+  if (chore.repeat === "weekly") {
+    return new Date(chore.date).getDay() === new Date(dateStr).getDay();
+  }
+
+  if (chore.repeat === "monthly") {
+    return new Date(chore.date).getDate() === new Date(dateStr).getDate();
+  }
+
+  return false;
+}
+
+// 리스트
+function renderList() {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  chores
+    .filter(c => isMatch(c, selectedDate))
+    .forEach(c => {
+      const div = document.createElement("div");
+      div.className = "card " + (c.done ? "done" : "");
+
+      div.innerHTML = `
+        <span>${c.title} (${c.user})</span>
+        <div>
+          <button onclick="toggle(${c.id})">완료</button>
+          <button class="thanks-btn" onclick="thanks('${c.user}')">❤️</button>
+        </div>
+      `;
+
+      list.appendChild(div);
+    });
+
+  updateStats();
 }
 
 // 완료
@@ -55,57 +99,67 @@ function toggle(id) {
   const chore = chores.find(c => c.id === id);
   chore.done = !chore.done;
   save();
-  render();
+  renderList();
 }
 
-// 화면
-function render() {
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+// ❤️ 고마워
+function thanks(user) {
+  alert(user + "에게 고마워!");
+}
 
-  let scoreA = 0;
-  let scoreB = 0;
+// 추가
+function addChore() {
+  const title = document.getElementById("title").value;
+  const user = document.getElementById("user").value;
+  const points = Number(document.getElementById("points").value);
+  const repeat = document.getElementById("repeat").value;
+
+  if (!title) return;
+
+  chores.push({
+    id: Date.now(),
+    title,
+    user,
+    points,
+    date: selectedDate,
+    repeat,
+    done: false
+  });
+
+  save();
+  renderList();
+}
+
+// 📊 통계 + 🏆 주간 승자
+function updateStats() {
+  let a = 0, b = 0;
 
   chores.forEach(c => {
     if (c.done) {
-      if (c.user === "A") scoreA += c.points;
-      else scoreB += c.points;
+      if (c.user === "A") a += c.points;
+      else b += c.points;
     }
-
-    const div = document.createElement("div");
-    div.className = "card " + (c.done ? "done" : "");
-
-    div.innerHTML = `
-      <div>
-        <b>${c.title}</b><br/>
-        (${c.user}) ${c.points}점
-      </div>
-      <button class="complete-btn" onclick="toggle(${c.id})">
-        ${c.done ? "취소" : "완료"}
-      </button>
-    `;
-
-    list.appendChild(div);
   });
 
-  document.getElementById("scoreA").innerText = scoreA;
-  document.getElementById("scoreB").innerText = scoreB;
+  document.getElementById("stats").innerText =
+    `A: ${a}점 | B: ${b}점`;
 
-  const leader = document.getElementById("leader");
+  const winner = document.getElementById("weeklyWinner");
 
-  if (scoreA > scoreB) {
-    leader.innerText = "🔥 A가 이기는 중!";
-  } else if (scoreB > scoreA) {
-    leader.innerText = "🔥 B가 이기는 중!";
-  } else {
-    leader.innerText = "🤝 동점!";
-  }
+  if (a > b) winner.innerText = "🏆 이번 주 승자: A";
+  else if (b > a) winner.innerText = "🏆 이번 주 승자: B";
+  else winner.innerText = "🤝 동점";
 }
 
-function resetDay() {
-  chores = [];
-  save();
-  render();
+function prevMonth() {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
 }
 
-render();
+function nextMonth() {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+}
+
+renderCalendar();
+renderList();
