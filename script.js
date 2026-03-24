@@ -1,27 +1,39 @@
-const today = new Date().toISOString().slice(0,10);
-const savedDate = localStorage.getItem("date");
-
-if (savedDate !== today) {
-  localStorage.setItem("date", today);
-  chores = [];
-}
-
-
 let chores = JSON.parse(localStorage.getItem("chores")) || [];
+
+// 템플릿
+const templates = {
+  "주방": ["설거지", "음식물 쓰레기", "냉장고 정리"],
+  "청소": ["바닥 청소", "먼지 닦기", "쓰레기 버리기"],
+  "세탁": ["빨래 돌리기", "빨래 널기", "빨래 개기"],
+  "욕실": ["변기 청소", "세면대 청소", "샤워부스 청소"]
+};
 
 function save() {
   localStorage.setItem("chores", JSON.stringify(chores));
 }
 
+// 카테고리 선택
+function selectCategory(category) {
+  const list = document.getElementById("templateList");
+  list.innerHTML = "";
+
+  templates[category].forEach(item => {
+    const btn = document.createElement("button");
+    btn.innerText = item;
+    btn.onclick = () => {
+      document.getElementById("title").value = item;
+    };
+    list.appendChild(btn);
+  });
+}
+
+// 추가
 function addChore() {
   const title = document.getElementById("title").value.trim();
   const user = document.getElementById("user").value;
   const points = Number(document.getElementById("points").value);
 
-  if (!title || !points) {
-    alert("내용과 점수를 입력해줘!");
-    return;
-  }
+  if (!title || !points) return;
 
   chores.push({
     id: Date.now(),
@@ -38,6 +50,7 @@ function addChore() {
   document.getElementById("points").value = "";
 }
 
+// 완료
 function toggle(id) {
   const chore = chores.find(c => c.id === id);
   chore.done = !chore.done;
@@ -45,6 +58,7 @@ function toggle(id) {
   render();
 }
 
+// 화면
 function render() {
   const list = document.getElementById("list");
   list.innerHTML = "";
@@ -80,20 +94,18 @@ function render() {
   const leader = document.getElementById("leader");
 
   if (scoreA > scoreB) {
-    leader.innerText = "🔥 사용자 A가 앞서고 있어!";
+    leader.innerText = "🔥 A가 이기는 중!";
   } else if (scoreB > scoreA) {
-    leader.innerText = "🔥 사용자 B가 앞서고 있어!";
+    leader.innerText = "🔥 B가 이기는 중!";
   } else {
-    leader.innerText = "🤝 지금은 동점!";
+    leader.innerText = "🤝 동점!";
   }
 }
 
 function resetDay() {
-  if (confirm("오늘 기록을 초기화할까?")) {
-    chores = [];
-    save();
-    render();
-  }
+  chores = [];
+  save();
+  render();
 }
 
 render();
