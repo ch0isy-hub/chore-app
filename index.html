@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>우리 집안일 게임</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>🏠 우리 집안일 게임</h1>
+
+  <div class="score-box">
+    <div>👤 사용자 A: <span id="scoreA">0</span></div>
+    <div>👤 사용자 B: <span id="scoreB">0</span></div>
+  </div>
+
+  <div id="leader" class="leader"></div>
+
+  <div class="input-box">
+    <input id="title" placeholder="집안일 입력" />
+
+    <select id="user">
+      <option value="A">사용자 A</option>
+      <option value="B">사용자 B</option>
+    </select>
+
+    <input id="points" type="number" placeholder="점수" />
+
+    <button onclick="addChore()">추가</button>
+  </div>
+
+  <div id="list"></div>
+
+  <button class="reset-btn" onclick="resetDay()">오늘 리셋</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

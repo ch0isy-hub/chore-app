@@ -1,0 +1,71 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 16px;
+  background: #f5f7fb;
+}
+
+h1 {
+  text-align: center;
+}
+
+.score-box {
+  display: flex;
+  justify-content: space-around;
+  margin: 16px 0;
+  font-weight: bold;
+}
+
+.leader {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.input-box {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+input, select {
+  flex: 1;
+}
+
+input, select, button {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+.reset-btn {
+  width: 100%;
+  margin-top: 10px;
+  background: #ff5252;
+}
+
+.card {
+  background: white;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.done {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.complete-btn {
+  background: #2196F3;
+  margin-left: 8px;
+}
