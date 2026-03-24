@@ -1,3 +1,12 @@
+const today = new Date().toISOString().slice(0,10);
+const savedDate = localStorage.getItem("date");
+
+if (savedDate !== today) {
+  localStorage.setItem("date", today);
+  chores = [];
+}
+
+
 let chores = JSON.parse(localStorage.getItem("chores")) || [];
 
 function save() {
